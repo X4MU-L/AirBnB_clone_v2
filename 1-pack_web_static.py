@@ -13,9 +13,9 @@ def do_pack():
     dt = datetime.strftime(datetime.utcnow(), '%Y%m%d%H%M%S')
     file_path = "versions/web_static_{}.tgz".format(dt)
     if not os.path.isdir('versions'):
-        if fab.local('mkdir -p versions').return_code != 0:
+        if fab.local('mkdir -p versions').failed is True:
             return None
     command = "tar -cvzf {} web_static".format(file_path)
-    if fab.local(command).return_code != 0:
+    if fab.local(command).failed is True:
         return None
     return file_path
