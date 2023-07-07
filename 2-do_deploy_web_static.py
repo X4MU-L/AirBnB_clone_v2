@@ -17,6 +17,10 @@ def do_deploy(archive_path):
     if put(archive_path, '/tmp/{}.tgz'.format(_file)).failed is True:
         return False
 
+    if run('rm -rf /data/web_static/releases/{}'
+           .format(_file)).failed is True:
+        return False
+
     if run('mkdir -p /data/web_static/releases/{}/'
            .format(_file)).failed is True:
         return False
