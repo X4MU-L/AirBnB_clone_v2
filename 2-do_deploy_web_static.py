@@ -34,7 +34,7 @@ def do_deploy(archive_path):
     if run(command).failed is True:
         return False
 
-    if run('rm -rf /data/web_static/releases{}/web_static'
+    if run('rm -rf /data/web_static/releases/{}/web_static'
            .format(_file)).failed is True:
         return False
 
