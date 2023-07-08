@@ -3,10 +3,10 @@
     This scripts updates the web servers with an archive.
 """
 import os.path
-from fabric.api import hosts, put, run
+from fabric.api import env, put, run
 
 
-hosts = ['52.87.215.172', '100.26.231.127']
+env.hosts = ['52.87.215.172', '100.26.231.127']
 
 
 def do_deploy(archive_path):
