@@ -32,9 +32,9 @@ def do_deploy(archive_path):
     if run('rm /tmp/{}.tgz'.format(_file)).failed is True:
         return False
 
-    command = "mv /data/web_static/releases/{}/web_static/*"\
-        .format(_file)
-    command += " /data/web_static/releases/{}/".format(_file)
+    r_path = "/data/web_static/releases/"
+    command = "mv {}/{}/web_static/*".format(r_path, _file)
+    command += " {}/{}/".format(r_path, _file)
     if run(command).failed is True:
         return False
 
