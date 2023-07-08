@@ -27,7 +27,7 @@ def do_deploy(archive_path):
         return False
 
     if run('tar -xzf /tmp/{}.tgz -C {}/{}/'
-           .format(r_path, _file, _file)).failed is True:
+           .format(_file, r_path, _file)).failed is True:
         return False
 
     if run('rm /tmp/{}.tgz'.format(_file)).failed is True:
