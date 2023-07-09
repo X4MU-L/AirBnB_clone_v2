@@ -10,10 +10,12 @@ def do_pack():
     """archives all web_static folder in the current direcory"""
 
     creat_time = datetime.utcnow().strftime("%Y%m%d%H%M%S")
-    path = "versions/web_static_{}.tgz".format(creat_time)
+    path = "versions/web_static_%s.tgz" % (creat_time.strip())
     if not os.path.isdir("versions"):
         if local("mkdir versions").failed is True:
             return None
-        if local("tar -cvzf {} web_static/".format(path)).failed is True:
-            return None
-        return path
+
+    if local("tar -cvzf %s web_static/" % (path)).failed is True:
+        return None
+
+    return path
