@@ -15,3 +15,4 @@ def deploy():
     file = execute(do_pack)
     if file:
         return do_deploy(list(file.values()[0]))
+    return False
