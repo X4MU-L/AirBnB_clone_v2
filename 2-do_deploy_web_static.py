@@ -18,6 +18,9 @@ def do_deploy(archive_path):
     if put(archive_path, "/tmp/{}.tgz".format(file_name)).failed is True:
         return False
 
+    if run('rm -rf {}/{}'.format(save_path, file_name)).failed is True:
+        return False
+
     if run("mkdir -p {}{}/".format(save_path, file_name)).failed is True:
         return False
 
@@ -29,19 +32,19 @@ def do_deploy(archive_path):
     if run("rm /tmp/{}.tgz".format(file_name)).failed is True:
         return False
 
-    mv_files = "mv {}/{}/web_static/*".format(save_path, file_name)
-    mv_files += " {}/{}/".format(save_path, file_name)
+    mv_files = "mv {}{}/web_static/*".format(save_path, file_name)
+    mv_files += " {}{}/".format(save_path, file_name)
     if run(mv_files).failed is True:
         return False
 
-    if run('rm -rf {}/{}/web_static'
+    if run('rm -rf {}{}/web_static'
            .format(save_path, file_name)).failed is True:
         return False
 
     if run('rm -rf /data/web_static/current').failed is True:
         return False
 
-    if run('ln -s {}/{} /data/web_static/current'
+    if run('ln -s {}{} /data/web_static/current'
            .format(save_path, file_name)).failed is True:
         return False
     return True
