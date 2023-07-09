@@ -12,39 +12,30 @@ def do_deploy(archive_path):
     if os.path.isfile(archive_path) is False:
         return False
 
-    file_name = archive_path.split("/")[-1].split(".")[0]
-    save_path = "/data/web_static/releases/"
+    _file = archive_path.split('/')[-1].split('.')[0]
+    r_path = "/data/web_static/releases"
 
-    if put(archive_path, "/tmp/{}.tgz".format(file_name)).failed is True:
+    if put(archive_path, '/tmp/{}.tgz'.format(_file)).failed is True:
         return False
 
-    if run('rm -rf {}{}'.format(save_path, file_name)).failed is True:
+    if run('rm -rf {}/{}'.format(r_path, _file)).failed is True:
         return False
 
-    if run("mkdir -p {}{}/".format(save_path, file_name)).failed is True:
+    if run('mkdir -p {}/{}/'.format(r_path, _file)).failed is True:
         return False
 
-    if run("tar -xvf /tmp/{}.tgz -C {}{}/".format(
-        file_name, save_path, file_name
-    )).failed is True:
+    if run('tar -xzf /tmp/{}.tgz -C {}/{}/'
+           .format(_file, r_path, _file)).failed is True:
         return False
 
-    if run("rm /tmp/{}.tgz".format(file_name)).failed is True:
+    if run('rm /tmp/{}.tgz'.format(_file)).failed is True:
         return False
 
-    mv_files = "mv {}{}/web_static/*".format(save_path, file_name)
-    mv_files += " {}{}/".format(save_path, file_name)
-    if run(mv_files).failed is True:
+    command = "mv {}/{}/web_static/*".format(r_path, _file)
+    command += " {}/{}/".format(r_path, _file)
+    if run(command).failed is True:
         return False
 
-    if run('rm -rf {}{}/web_static'
-           .format(save_path, file_name)).failed is True:
+    if run('rm -rf {}/{}/web_static'
+           .format(r_path, _file)).failed is True:
         return False
-
-    if run('rm -rf /data/web_static/current').failed is True:
-        return False
-
-    if run('ln -s {}{} /data/web_static/current'
-           .format(save_path, file_name)).failed is True:
-        return False
-    return True
