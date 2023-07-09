@@ -8,21 +8,21 @@ env.hosts = ['18.210.33.133', '35.174.200.184']
 
 def do_clean(number=0):
     """"cleans up old versions of archives"""
-    number = 2 if number <= 0 else number + 1
+    number = int(number)
+    number = 1 if number <= 0 else number
     _to_clean = ["versions/", "/data/web_static/releases/"]
     for dirs_ in _to_clean:
         files = ""
         if dirs_ == "versions/":
-            files = local("ls -cltr {dirs_} | awk '{print $NF}'",
-                          hide=True).stdout.split()
+            files = local("ls -cltr %s | awk '{print $NF}'" % (dirs_),
+                          capture=True).stdout.split()
+            for file_ in files[1 + number:]:
+                local("rm %s%s" % (dirs_, file_))
+                print("Deleted file: %s" % (file_))
         else:
-            files = run("ls -cltr {dirs_} | awk '{print $NF}'",
-                        hide=True).stdout.split()
-        count = 0
-        for file in files:
-            if run(f"test -f {file} && echo 'True' || echo 'False'", hide=True).stdout.strip() == 'True':
-                if count >= number:
-                    run(f"rm {file}")
-                    print(f"Deleted file: {file}")
-                else:
-                    count += 1
+            files = run(
+                "ls -cltr %s | awk '{print $NF}'" % (dirs_)).stdout.split()
+            files.remove("test")
+            for file_ in files[1 + number:]:
+                run("rm -rf %s%s" % (dirs_, file_))
+                print("Deleted directory: %s" % (file_))
