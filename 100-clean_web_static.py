@@ -14,14 +14,14 @@ def do_clean(number=0):
     for dirs_ in _to_clean:
         files = ""
         if dirs_ == "versions/":
-            files = local("ls -cltr %s | awk '{print $NF}'" % (dirs_),
+            files = local("ls -clt %s | awk '{print $NF}'" % (dirs_),
                           capture=True).stdout.split()
             for file_ in files[1 + number:]:
                 local("rm %s%s" % (dirs_, file_))
                 print("Deleted file: %s" % (file_))
         else:
             files = run(
-                "ls -cltr %s | awk '{print $NF}'" % (dirs_)).stdout.split()
+                "ls -clt %s | awk '{print $NF}'" % (dirs_)).stdout.split()
             files.remove("test")
             for file_ in files[1 + number:]:
                 run("rm -rf %s%s" % (dirs_, file_))
