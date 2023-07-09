@@ -18,7 +18,7 @@ def do_deploy(archive_path):
     if put(archive_path, "/tmp/{}.tgz".format(file_name)).failed is True:
         return False
 
-    if run('rm -rf {}/{}'.format(save_path, file_name)).failed is True:
+    if run('rm -rf {}{}'.format(save_path, file_name)).failed is True:
         return False
 
     if run("mkdir -p {}{}/".format(save_path, file_name)).failed is True:
