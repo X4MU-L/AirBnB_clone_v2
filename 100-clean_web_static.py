@@ -7,6 +7,7 @@ env.hosts = ['18.210.33.133', '35.174.200.184']
 
 
 def do_clean(number=0):
+    """"cleans up old versions of archives"""
     number = 1 if number <= 0 else number
     cleans = ["versions/", "/data/web_static/releases/"]
     for dirs_ in cleans:
