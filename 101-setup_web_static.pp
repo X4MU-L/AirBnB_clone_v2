@@ -1,11 +1,21 @@
 # global variables
 $data_test_root = '/data/web_static/releases/test/'
 $data_shared_root = '/data/web_static/shared/'
+$data_static = '/data/web_static/'
 $www_root = '/var/www/html/'
 
 # apt update
 exec { 'apt update':
     command => '/usr/bin/apt update -y',
+}
+exec { "mkdir ${data_test_root}":
+    command => "/usr/bin/mkdir -p -m 0755 ${data_test_root}; ",
+}
+exec { "mkdir ${data_shared_root}":
+    command => "/usr/bin/mkdir -p -m 0755 ${data_shared_root}",
+}
+exec { "/usr/bin/chown /data/":
+    command => "chown -R ubuntu:ubuntu /data/",
 }
 
 # package resources
@@ -38,30 +48,6 @@ file { "${data_test_root}index.html":
   require => File["${data_test_root}"]
 }
 
-# dynamic root directory
-file { '/data/':
-  ensure => 'directory',
-  owner  => 'ubuntu',
-  group  => 'ubuntu',
-  mode   => '0744'
-}
-
-file { '/data/web_static/':
-  ensure  => 'directory',
-  owner   => 'ubuntu',
-  group   => 'ubuntu',
-  mode    => '0744',
-  require => File['/data/']
-}
-
-file { '/data/web_static/releases/':
-  ensure  => 'directory',
-  owner   => 'ubuntu',
-  group   => 'ubuntu',
-  mode    => '0744',
-  require => File['/data/web_static']
-}
-
 file { $data_shared_root:
   ensure => 'directory',
   owner  => 'ubuntu',
@@ -75,7 +61,6 @@ file { $data_test_root:
   owner  => 'ubuntu',
   group  => 'ubuntu',
   mode   =>  '0744',
-  require => File['/data/web_static/releases/']
 }
 
 # server block
