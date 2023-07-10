@@ -54,7 +54,7 @@ file { '/data/web_static/':
   require => File['/data/']
 }
 
-file { '/data/web_static/releases':
+file { '/data/web_static/releases/':
   ensure  => 'directory',
   owner   => 'ubuntu',
   group   => 'ubuntu',
@@ -75,6 +75,7 @@ file { $data_test_root:
   owner  => 'ubuntu',
   group  => 'ubuntu',
   mode   =>  '0744',
+  require => File['/data/web_static/releases/']
 }
 
 # server block
