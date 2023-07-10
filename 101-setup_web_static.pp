@@ -8,18 +8,17 @@ exec { 'apt update':
     command => '/usr/bin/apt update -y',
 }
 exec { "mkdir ${data_test_root}":
-    command => "/usr/bin/mkdir -p -m 0744 ${data_test_root}; ",
+    command => "/usr/bin/mkdir -p -m 0744 ${data_test_root}",
+    onlyif  => ['/usr/bin/test ! -e /data/']
 }
 exec { "mkdir ${data_shared_root}":
     command => "/usr/bin/mkdir -p -m 0744 ${data_shared_root}",
+    onlyif  => ['/usr/bin/test ! -e /data/']
 }
-exec { "chown /data/":
-    command => "/usr/bin/chown -R ubuntu:ubuntu /data/",
+exec { 'chown /data/':
+    command => '/usr/bin/chown -R ubuntu:ubuntu /data/',
 }
 
-exec { "echo This is a test page > ${data_test_root}/index.html":
-    command => "/usr/bin/echo This is a test page > ${data_test_root}/index.html",
-}
 # package resources
 package { 'nginx':
   ensure   => 'installed',
@@ -43,14 +42,18 @@ file { "${www_root}error404.html":
 }
 
 
-file { $data_test_root:
+file { '/data/web_static/current':
   ensure => link,
-  target => '/data/web_static/current',
+  target => $data_test_root,
   owner  => 'ubuntu',
   group  => 'ubuntu',
   mode   =>  '0744',
 }
-
+file { "${data_test_root}index.html":
+  ensure  => 'present',
+  content => 'this is a test page',
+  require => File[$data_test_root]
+}
 # server block
 exec { 'server block config':
   command => '/bin/printf %s "server {
