@@ -8,15 +8,18 @@ exec { 'apt update':
     command => '/usr/bin/apt update -y',
 }
 exec { "mkdir ${data_test_root}":
-    command => "/usr/bin/mkdir -p -m 0755 ${data_test_root}; ",
+    command => "/usr/bin/mkdir -p -m 0744 ${data_test_root}; ",
 }
 exec { "mkdir ${data_shared_root}":
-    command => "/usr/bin/mkdir -p -m 0755 ${data_shared_root}",
+    command => "/usr/bin/mkdir -p -m 0744 ${data_shared_root}",
 }
 exec { "chown /data/":
     command => "/usr/bin/chown -R ubuntu:ubuntu /data/",
 }
 
+exec { "echo This is a test page > ${data_test_root}/index.html":
+    command => "/usr/bin/echo This is a test page > ${data_test_root}/index.html",
+}
 # package resources
 package { 'nginx':
   ensure   => 'installed',
@@ -39,20 +42,6 @@ file { "${www_root}error404.html":
   require => Package['nginx']
 }
 
-# dynamic root files
-file { "${data_test_root}index.html":
-  ensure  => 'present',
-  content => 'This is a test page',
-  mode    =>  '0644',
-  require => File["${data_test_root}"]
-}
-
-file { $data_shared_root:
-  ensure => 'directory',
-  owner  => 'ubuntu',
-  group  => 'ubuntu',
-  mode   =>  '0744',
-}
 
 file { $data_test_root:
   ensure => link,
