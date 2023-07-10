@@ -47,7 +47,7 @@ file { '/data/web_static/current':
   target => $data_test_root,
   owner  => 'ubuntu',
   group  => 'ubuntu',
-  mode   =>  '0744',
+  mode   =>  '0777',
 }
 file { "${data_test_root}index.html":
   ensure  => 'present',
