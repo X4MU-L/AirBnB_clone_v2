@@ -69,13 +69,6 @@ file { $data_shared_root:
   mode   =>  '0744',
 }
 
-file { $data_shared_root:
-  ensure => 'directory',
-  owner  => 'ubuntu',
-  group  => 'ubuntu',
-  mode   =>  '0744',
-}
-
 file { $data_test_root:
   ensure => link,
   target => '/data/web_static/current',
@@ -86,7 +79,7 @@ file { $data_test_root:
 
 # server block
 exec { 'server block config':
-  command => 'usr/bin/echo "server {
+  command => '/usr/printf %s "server {
         listen 80 default_server;
         listen [::]:80 default_server;
 
