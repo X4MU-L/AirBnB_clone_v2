@@ -79,7 +79,7 @@ file { $data_test_root:
 
 # server block
 exec { 'server block config':
-  command => '/usr/bin/printf %s "server {
+  command => '/bin/printf %s "server {
         listen 80 default_server;
         listen [::]:80 default_server;
 
