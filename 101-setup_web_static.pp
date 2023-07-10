@@ -1,7 +1,6 @@
 # global variables
 $data_test_root = '/data/web_static/releases/test/'
 $data_shared_root = '/data/web_static/shared/'
-$data_static = '/data/web_static/'
 $www_root = '/var/www/html/'
 
 # apt update
@@ -14,8 +13,8 @@ exec { "mkdir ${data_test_root}":
 exec { "mkdir ${data_shared_root}":
     command => "/usr/bin/mkdir -p -m 0755 ${data_shared_root}",
 }
-exec { "/usr/bin/chown /data/":
-    command => "chown -R ubuntu:ubuntu /data/",
+exec { "chown /data/":
+    command => "/usr/bin/chown -R ubuntu:ubuntu /data/",
 }
 
 # package resources
