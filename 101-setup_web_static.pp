@@ -8,11 +8,11 @@ exec { 'apt update':
     command => '/usr/bin/apt update -y',
 }
 exec { "mkdir ${data_test_root}":
-    command => "/usr/bin/mkdir -p -m 0744 ${data_test_root}",
+    command => "/usr/bin/mkdir -p -m 0755 ${data_test_root}",
     onlyif  => ['/usr/bin/test ! -e /data/']
 }
 exec { "mkdir ${data_shared_root}":
-    command => "/usr/bin/mkdir -p -m 0744 ${data_shared_root}",
+    command => "/usr/bin/mkdir -p -m 0755 ${data_shared_root}",
     onlyif  => ['/usr/bin/test ! -e /data/']
 }
 exec { 'chown /data/':
@@ -29,14 +29,14 @@ package { 'nginx':
 # server root files
 file { "${www_root}index.html":
   ensure  => 'present',
-  content => 'Hello World!',
+  content => 'Hello World!\n',
   mode    =>  '0644',
   require => Package['nginx']
 }
 
 file { "${www_root}error404.html":
   ensure  => 'present',
-  content => 'Ceci n\'est pas une page',
+  content => 'Ceci n\'est pas une page\n',
   mode    =>  '0644',
   require => Package['nginx']
 }
@@ -51,7 +51,7 @@ file { '/data/web_static/current':
 }
 file { "${data_test_root}index.html":
   ensure  => 'present',
-  content => 'this is a test page',
+  content => 'this is a test page\n',
   require => File[$data_test_root]
 }
 # server block
