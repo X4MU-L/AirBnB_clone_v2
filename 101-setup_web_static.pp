@@ -3,12 +3,16 @@ $data_test_root = '/data/web_static/releases/test/'
 $data_shared_root = '/data/web_static/shared/'
 $www_root = '/var/www/html/'
 
+# apt update
+exec { 'apt update':
+    command => '/usr/bin/apt update -y',
+}
+
 # package resources
 package { 'nginx':
   ensure   => 'installed',
   name     => 'nginx',
   provider => 'apt',
-  after    => Exec['apt update']
 }
 
 # server root files
@@ -16,12 +20,14 @@ file { "${www_root}index.html":
   ensure  => 'present',
   content => 'Hello World!',
   mode    =>  '0644',
+  require => Package['nginx']
 }
 
 file { "${www_root}error404.html":
   ensure  => 'present',
   content => 'Ceci n\'est pas une page',
   mode    =>  '0644',
+  require => Package['nginx']
 }
 
 # dynamic root files
@@ -29,9 +35,40 @@ file { "${data_test_root}index.html":
   ensure  => 'present',
   content => 'This is a test page',
   mode    =>  '0644',
+  require => File['/data/web_static/']
 }
 
 # dynamic root directory
+file { '/data/':
+  ensure => 'directory',
+  owner  => 'ubuntu',
+  group  => 'ubuntu',
+  mode   => '0744'
+}
+
+file { '/data/web_static/':
+  ensure  => 'directory',
+  owner   => 'ubuntu',
+  group   => 'ubuntu',
+  mode    => '0744',
+  require => File['/data/']
+}
+
+file { '/data/web_static/releases':
+  ensure  => 'directory',
+  owner   => 'ubuntu',
+  group   => 'ubuntu',
+  mode    => '0744',
+  require => File['/data/web_static']
+}
+
+file { $data_shared_root:
+  ensure => 'directory',
+  owner  => 'ubuntu',
+  group  => 'ubuntu',
+  mode   =>  '0744',
+}
+
 file { $data_shared_root:
   ensure => 'directory',
   owner  => 'ubuntu',
@@ -85,12 +122,6 @@ exec { 'server block config':
                  internal;
         }
 }" > /etc/nginx/sites-available/default',
-}
-
-# apt update
-exec { 'apt update':
-    command => '/usr/bin/apt update -y',
-    unless  => ['test ! -e /usr/sbin/nginx']
 }
 
 # restart nginx service
