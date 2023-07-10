@@ -35,7 +35,7 @@ file { "${data_test_root}index.html":
   ensure  => 'present',
   content => 'This is a test page',
   mode    =>  '0644',
-  require => File['/data/web_static/']
+  require => File["${data_test_root}"]
 }
 
 # dynamic root directory
@@ -79,7 +79,7 @@ file { $data_test_root:
 
 # server block
 exec { 'server block config':
-  command => '/usr/printf %s "server {
+  command => '/usr/bin/printf %s "server {
         listen 80 default_server;
         listen [::]:80 default_server;
 
