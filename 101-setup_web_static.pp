@@ -51,6 +51,9 @@ file { '/data/web_static/current':
 }
 file { "${data_test_root}index.html":
   ensure  => 'present',
+  owner  => 'ubuntu',
+  group  => 'ubuntu',
+  mode    =>  '0755',
   content => 'this is a test page\n',
 }
 # server block
