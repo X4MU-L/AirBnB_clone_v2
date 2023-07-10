@@ -52,7 +52,6 @@ file { '/data/web_static/current':
 file { "${data_test_root}index.html":
   ensure  => 'present',
   content => 'this is a test page\n',
-  require => File[$data_test_root]
 }
 # server block
 exec { 'server block config':
