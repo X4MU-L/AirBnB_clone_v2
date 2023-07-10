@@ -16,7 +16,7 @@ exec { "mkdir ${data_shared_root}":
     onlyif  => ['/usr/bin/test ! -e /data/']
 }
 exec { 'chown /data/':
-    command => '/usr/bin/chown -R ubuntu:ubuntu /data/',
+    command => '/usr/bin/chown  ubuntu:ubuntu /data/',
 }
 
 # package resources
@@ -45,8 +45,6 @@ file { "${www_root}error404.html":
 file { '/data/web_static/current':
   ensure => link,
   target => $data_test_root,
-  owner  => 'ubuntu',
-  group  => 'ubuntu',
   mode   =>  '0777',
 }
 file { "${data_test_root}index.html":
