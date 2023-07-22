@@ -19,5 +19,5 @@ class State(BaseModel, Base):
         @property
         def cities(self):
             return [obj for obj
-                    in FileStorage.all(City).values()
+                    in FileStorage().all(City).values()
                     if obj.state_id == self.id]
