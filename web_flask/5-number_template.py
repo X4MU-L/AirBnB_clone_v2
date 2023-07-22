@@ -22,7 +22,7 @@ def HBNB():
     create a /hbnb route
     return HBNB!
     """
-    return "HBNB!"
+    return "HBNB"
 
 
 @app.route("/c/<text>", strict_slashes=False)
