@@ -11,16 +11,14 @@ app = Flask(__name__)
 
 @app.route("/cities_by_states", strict_slashes=False)
 def get_cities_state():
-    """get cities in each state"""
     states = storage.all(State).values()
     return render_template("8-cities_by_states.html", states=states)
 
 
 @app.teardown_appcontext
 def tear_down(res_or_except=None):
-    """Tear down app context"""
     storage.close()
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(host="0.0.0.0")
