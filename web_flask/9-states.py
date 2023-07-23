@@ -26,4 +26,4 @@ def tear_down(res_or_except=None):
 
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", debug=True)
+    app.run(host="0.0.0.0")
