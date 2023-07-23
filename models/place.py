@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 """ Place Module for HBNB project """
+import models
 from models.amenity import Amenity
 from models.base_model import BaseModel, Base
 from models.review import Review
@@ -61,16 +62,16 @@ class Place(BaseModel, Base):
         @property
         def reviews(self):
             return [obj for obj
-                    in FileStorage.all(Review).values()
+                    in models.storage.all(Review).values()
                     if obj.place_id == self.id]
 
         @property
         def amenities(self):
             return [amenity for amenity
-                    in FileStorage.all(Amenity).values()
+                    in models.storage.all(Amenity).values()
                     if amenity.place_id in self.amenity_ids]
 
         @amenities.setter
         def amenities(self, obj):
-            if type(self) == Amenity:
+            if type(obj) == Amenity:
                 self.amenity_ids.append(obj.id)
