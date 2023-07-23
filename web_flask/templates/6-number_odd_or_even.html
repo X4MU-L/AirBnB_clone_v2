@@ -1,3 +1,10 @@
-{% extends 'base.html' %}{% block content %} {%- if num|int is even -%}Number:
-{{ num }} is even {%- else -%}Number: {{ num }} is odd {% endif %} {% endblock
-content %}
+{% extends 'base.html' %}
+{%- block content -%}
+<H1>
+  {%- if num|int is even -%}
+  Number: {{ num }} is even
+  {%- else -%}
+  Number: {{ num }} is odd
+  {%- endif -%}
+</H1>
+{%- endblock content -%}
