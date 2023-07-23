@@ -9,19 +9,19 @@ from models.state import State
 app = Flask(__name__)
 
 
-@app.teardown_appcontext
-def tear_down(res_or_except=None):
-    storage.close()
-
-
 @app.route("/states_list", strict_slashes=False)
 def get_states():
     """
     gets a list of all states in the storage and
     return html page to render page
     """
-    states = list(storage.all(State).values())
+    states = storage.all(State).values()
     return render_template("7-states_list.html", states=states)
+
+
+@app.teardown_appcontext
+def tear_down(res_or_except=None):
+    storage.close()
 
 
 if __name__ == "__main__":
