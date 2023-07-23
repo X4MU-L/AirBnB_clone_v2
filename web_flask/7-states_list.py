@@ -11,7 +11,7 @@ app = Flask(__name__)
 
 
 @app.teardown_appcontext
-def tear_down(res_or_except):
+def tear_down(res_or_except=None):
     storage.close()
 
 
