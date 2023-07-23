@@ -21,6 +21,7 @@ def get_states():
 
 @app.teardown_appcontext
 def tear_down(res_or_except=None):
+    """Tear down app context"""
     storage.close()
 
 
